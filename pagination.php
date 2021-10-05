@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Pagination Bootstrap
@@ -29,6 +30,7 @@ final class Pagination
     private $size              = "pagination-sm";
     private $alignment         = "justify-content-center";
     private $icon              = true;
+    private $stats             = true;
 
     public function create($total_records, $records_per_pages, $current_page, $offset, $str_link = "")
     {
@@ -37,18 +39,18 @@ final class Pagination
                 $this->total_records           = $total_records;
                 $this->return['total_records'] = $this->total_records;
             } else {
-                throw new Exception('Invalid parameter: Total records must be positive int.');
+                throw new \Exception('Invalid parameter: Total records must be positive int.');
             }
 
             if (isset($records_per_pages) && is_int($records_per_pages) && $records_per_pages > 0) {
                 if ($records_per_pages > $this->total_records) {
-                    throw new Exception('Invalid parameter: Number of records per page cannot be greater than total records.');
+                    throw new \Exception('Invalid parameter: Number of records per page cannot be greater than total records.');
                 } else {
                     $this->records_per_pages           = $records_per_pages;
                     $this->return['records_per_pages'] = $this->records_per_pages;
                 }
             } else {
-                throw new Exception('Invalid parameter: Records per page must be positive int.');
+                throw new \Exception('Invalid parameter: Records per page must be positive int.');
             }
 
             $this->offset = $offset <= 1 ? 2 : $offset + 1;
@@ -57,9 +59,9 @@ final class Pagination
                 $this->str_link           = $str_link;
                 $this->return['str_link'] = $this->str_link;
             } else {
-                throw new Exception('Invalid parameter: String link invalid.');
+                throw new \Exception('Invalid parameter: String link invalid.');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo $this->error = $e->getMessage();
         }
 
@@ -80,16 +82,17 @@ final class Pagination
 
             $this->return['current_page']  = $this->current_page;
             $this->return['offset']        = $this->offset;
-            $this->return['show']['start'] = (($this->records_per_pages * $this->current_page) - $this->records_per_pages) + 1;
-            $this->return['show']['end']   = $this->return['show']['start'] + $this->records_per_pages - 1 < $this->total_records ? $this->return['show']['start'] + $this->records_per_pages - 1 : $this->total_records;
-            $this->return['show']['total'] = $this->total_records;
+            $this->return['stats']['start'] = (($this->records_per_pages * $this->current_page) - $this->records_per_pages) + 1;
+            $this->return['stats']['end']   = $this->return['stats']['start'] + $this->records_per_pages - 1 < $this->total_records ? $this->return['stats']['start'] + $this->records_per_pages - 1 : $this->total_records;
+            $this->return['stats']['total'] = $this->total_records;
 
-            $this->return['output'] = "
-                <nav id='pagination' class='text-center' aria-label='Page navigation'>
-                    <div>
-                        <span>{$this->return['show']['start']} to {$this->return['show']['end']} of {$this->return['show']['total']}</span>
-                    </div>
-                    <ul class='pagination {$this->size} {$this->alignment}'>";
+            $this->return['output'] = "<nav id='pagination' class='text-center' aria-label='Page navigation'>";
+
+            if ($this->stats) {
+                $this->return['output'] .= "<div><span>{$this->return['stats']['start']} to {$this->return['stats']['end']} of {$this->return['stats']['total']}</span></div>";
+            }
+                    
+            $this->return['output'] .= "<ul class='pagination {$this->size} {$this->alignment}'>";
 
             if ($this->current_page > 1) {
                 $link = $this->str_link . ($this->current_page - 1);
