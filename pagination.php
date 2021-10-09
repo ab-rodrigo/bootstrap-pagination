@@ -43,15 +43,11 @@ final class Pagination
             }
 
             if (isset($records_per_pages) && is_int($records_per_pages) && $records_per_pages > 0) {
-                if ($records_per_pages > $this->total_records) {
-                    throw new \Exception('Invalid parameter: Number of records per page cannot be greater than total records.');
-                } else {
-                    $this->records_per_pages           = $records_per_pages;
-                    $this->return['records_per_pages'] = $this->records_per_pages;
-                }
-            } else {
-                throw new \Exception('Invalid parameter: Records per page must be positive int.');
-            }
+                $this->records_per_pages           = $records_per_pages;
+                $this->return['records_per_pages'] = $this->records_per_pages;
+        } else {
+            throw new \Exception('Invalid parameter: Records per page must be positive int.');
+        }
 
             $this->offset = $offset <= 1 ? 2 : $offset + 1;
 
