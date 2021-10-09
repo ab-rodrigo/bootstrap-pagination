@@ -1,1 +1,3 @@
-# bootstrap-pagination
+# Bootstrap-pagination
+
+Create Bootstrap Pagination buttons
