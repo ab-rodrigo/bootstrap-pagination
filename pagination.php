@@ -1,8 +1,11 @@
 <?php
 
 /**
- *
  * Pagination Bootstrap
+ *
+ * Author: Rodrigo Barbosa
+ * Email: ab.rodrigo@outlook.com
+ * GitHub: https://github.com/ab-rodrigo/bootstrap-pagination
  *
  * @param int $total_records
  * @param int $records_per_pages
